@@ -1,0 +1,27 @@
+create table users(
+	user_id INT NOT NULL AUTO_INCREMENT,
+	username VARCHAR(200) NOT NULL,
+	mobile_number BIGINT NOT NULL,
+	PRIMARY KEY(user_id)
+);
+
+create table message(
+	msg_id INT NOT NULL AUTO_INCREMENT,
+	location VARCHAR(400) NOT NULL,
+	is_encrypted INT NOT NULL,
+	thres_time TIMESTAMP NOT NULL,
+	thres_num_users INT NOT NULL,
+	sender_id INT NOT NULL,
+	PRIMARY KEY(msg_id),
+	FOREIGN KEY(sender_id) REFERENCES users(user_id)
+);
+
+create table message_queue(
+	msg_id INT NOT NULL,
+	user_id INT NOT NULL,
+	subkey VARCHAR(300) NOT NULL,
+	status INT NOT NULL,
+	PRIMARY KEY(msg_id,user_id),
+	FOREIGN KEY(user_id) REFERENCES users(user_id),
+	FOREIGN KEY(msg_id) REFERENCES message(msg_id)
+);
